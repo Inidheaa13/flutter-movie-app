@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/movie/models/movie_model.dart';
 import 'package:flutter_application_1/movie/repostories/movie_repository.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class MovieGetDiscoverProvider with ChangeNotifier {
   final MovieRepository _movieRepository;
@@ -32,6 +33,31 @@ class MovieGetDiscoverProvider with ChangeNotifier {
         _movies.addAll(response.results);
         _isLoading = false;
         notifyListeners();
+        return null;
+      },
+    );
+  }
+
+  void getDiscoverWithPaging(
+    BuildContext context, {
+    required PagingController pagingController,
+    required int page,
+  }) async {
+    final result = await _movieRepository.getDiscover(page: page);
+    result.fold(
+      (errorMessage) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(errorMessage),
+        ));
+
+        return;
+      },
+      (response) {
+        if (response.results.length < 20) {
+          pagingController.appendLastPage(response.results);
+        } else {
+          pagingController.appendPage(response.results, page + 1);
+        }
         return null;
       },
     );
