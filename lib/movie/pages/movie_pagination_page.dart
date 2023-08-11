@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/movie/models/movie_model.dart';
 import 'package:flutter_application_1/movie/providers/movie_get_discover_provider.dart';
+import 'package:flutter_application_1/movie/providers/movie_get_top_rated_provider.dart';
 import 'package:flutter_application_1/widget/item_movie_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+enum TypeMovie { discover, topRated }
+
 class MoviePaginationPage extends StatefulWidget {
-  const MoviePaginationPage({super.key});
+  const MoviePaginationPage({super.key, required this.type});
+
+  final TypeMovie type;
 
   @override
   State<MoviePaginationPage> createState() => _MoviePaginationPageState();
@@ -20,8 +25,22 @@ class _MoviePaginationPageState extends State<MoviePaginationPage> {
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<MovieGetDiscoverProvider>().getDiscoverWithPaging(context,
-          pagingController: _pagingController, page: pageKey);
+      switch (widget.type) {
+        case TypeMovie.discover:
+          context.read<MovieGetDiscoverProvider>().getDiscoverWithPaging(
+                context,
+                pagingController: _pagingController,
+                page: pageKey,
+              );
+          break;
+        case TypeMovie.topRated:
+          context.read<MovieGetTopRatedProvider>().getPopularWithPagination(
+                context,
+                pagingController: _pagingController,
+                page: pageKey,
+              );
+          break;
+      }
     });
     super.initState();
   }
@@ -30,7 +49,16 @@ class _MoviePaginationPageState extends State<MoviePaginationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Discover Movies'),
+        title: Builder(builder: (_) {
+          switch (widget.type) {
+            case TypeMovie.discover:
+              return Text('Discover Movies');
+              ;
+            case TypeMovie.topRated:
+              return Text('Top Rated Movies');
+              ;
+          }
+        }),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0.5,
@@ -47,7 +75,7 @@ class _MoviePaginationPageState extends State<MoviePaginationPage> {
             widthPoster: 80,
           ),
         ),
-        separatorBuilder:(context, index) => SizedBox(height: 10),
+        separatorBuilder: (context, index) => SizedBox(height: 10),
       ),
     );
   }

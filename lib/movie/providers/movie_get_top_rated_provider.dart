@@ -3,10 +3,10 @@ import 'package:flutter_application_1/movie/models/movie_model.dart';
 import 'package:flutter_application_1/movie/repostories/movie_repository.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class MovieGetDiscoverProvider with ChangeNotifier {
+class MovieGetTopRatedProvider with ChangeNotifier {
   final MovieRepository _movieRepository;
 
-  MovieGetDiscoverProvider(this._movieRepository);
+  MovieGetTopRatedProvider(this._movieRepository);
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -14,43 +14,48 @@ class MovieGetDiscoverProvider with ChangeNotifier {
   final List<MovieModel> _movies = [];
   List<MovieModel> get movies => _movies;
 
-  void getDiscover(BuildContext context) async {
+  void getPopular(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
-    final result = await _movieRepository.getDiscover();
+
+    final result = await _movieRepository.getTopRated();
+
     result.fold(
-      (errorMessage) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(errorMessage),
-        ));
+      (messageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(messageError)),
+        );
 
         _isLoading = false;
         notifyListeners();
+
         return;
       },
       (response) {
         _movies.clear();
         _movies.addAll(response.results);
+
         _isLoading = false;
         notifyListeners();
-        return null;
+        return;
       },
     );
   }
 
-  void getDiscoverWithPaging(
+  void getPopularWithPagination(
     BuildContext context, {
     required PagingController pagingController,
     required int page,
   }) async {
-    final result = await _movieRepository.getDiscover(page: page);
-    result.fold(
-      (errorMessage) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(errorMessage),
-        ));
+    final result = await _movieRepository.getTopRated();
 
-        pagingController.error = errorMessage;
+    result.fold(
+      (messageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(messageError)),
+        );
+
+        pagingController.error = messageError;
 
         return;
       },
