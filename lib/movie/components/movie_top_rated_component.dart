@@ -14,7 +14,7 @@ class _MovieTopRatedComponentState extends State<MovieTopRatedComponent> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MovieGetTopRatedProvider>().getPopular(context);
+      context.read<MovieGetTopRatedProvider>().getTopRated(context);
     });
     super.initState();
   }
@@ -28,7 +28,7 @@ class _MovieTopRatedComponentState extends State<MovieTopRatedComponent> {
           builder: (_, provider, __) {
             if (provider.isLoading) {
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
+                margin: const EdgeInsets.symmetric(horizontal: 16.0),
                 decoration: BoxDecoration(
                     color: Colors.black26,
                     borderRadius: BorderRadius.circular(12.0)),
@@ -36,7 +36,7 @@ class _MovieTopRatedComponentState extends State<MovieTopRatedComponent> {
             }
             if (provider.movies.isNotEmpty) {
               return ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (_, index) {
                   return ImageNetworkWidget(
@@ -46,19 +46,19 @@ class _MovieTopRatedComponentState extends State<MovieTopRatedComponent> {
                     radius: 12.0,
                   );
                 },
-                separatorBuilder: (_, __) => SizedBox(
+                separatorBuilder: (_, __) => const SizedBox(
                   width: 8.0,
                 ),
                 itemCount: provider.movies.length,
               );
             }
             return Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
               decoration: BoxDecoration(
                 color: Colors.black26,
                 borderRadius: BorderRadius.circular(12.0),
               ),
-              child: Center(
+              child: const Center(
                 child: Text('Not found top rated movies'),
               ),
             );

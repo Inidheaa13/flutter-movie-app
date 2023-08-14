@@ -18,12 +18,12 @@ class MovieRepositoryImpl implements MovieRepository {
         final model = MovieResponseModel.fromJson(result.data);
         return Right(model);
       }
-      return Left('Error get discover movies');
+      return const Left('Error get discover movies');
     } on DioException catch (e) {
       if (e.response != null) {
         return Left(e.response.toString());
       }
-      return Left('Another error on get discover movies');
+      return const Left('Another error on get discover movies');
     }
   }
 
@@ -39,12 +39,33 @@ class MovieRepositoryImpl implements MovieRepository {
         final model = MovieResponseModel.fromJson(result.data);
         return Right(model);
       }
-      return Left('Error get top rate movies');
+      return const Left('Error get top rate movies');
     } on DioException catch (e) {
       if (e.response != null) {
         return Left(e.response.toString());
       }
-      return Left('Another error on get top rate movies');
+      return const Left('Another error on get top rate movies');
+    }
+  }
+
+  @override
+  Future<Either<String, MovieResponseModel>> getNowPlaying(
+      {int page = 1}) async {
+    try {
+      final result = await _dio.get(
+        '/movie/now_playing',
+        queryParameters: {'page': page},
+      );
+    if (result.statusCode == 200 && result.data != null) {
+        final model = MovieResponseModel.fromJson(result.data);
+        return Right(model);
+      }
+      return const Left('Error get now playing movies');
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return Left(e.response.toString());
+      }
+      return const Left('Another error on get now playing movies');
     }
   }
 }

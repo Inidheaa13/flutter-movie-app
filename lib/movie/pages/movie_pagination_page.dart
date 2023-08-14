@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/movie/models/movie_model.dart';
 import 'package:flutter_application_1/movie/providers/movie_get_discover_provider.dart';
+import 'package:flutter_application_1/movie/providers/movie_get_now_playing_provider.dart';
 import 'package:flutter_application_1/movie/providers/movie_get_top_rated_provider.dart';
 import 'package:flutter_application_1/widget/item_movie_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-enum TypeMovie { discover, topRated }
+enum TypeMovie { discover, topRated, nowPlaying }
 
 class MoviePaginationPage extends StatefulWidget {
   const MoviePaginationPage({super.key, required this.type});
@@ -34,7 +35,14 @@ class _MoviePaginationPageState extends State<MoviePaginationPage> {
               );
           break;
         case TypeMovie.topRated:
-          context.read<MovieGetTopRatedProvider>().getPopularWithPagination(
+          context.read<MovieGetTopRatedProvider>().getTopRatedWithPaging(
+                context,
+                pagingController: _pagingController,
+                page: pageKey,
+              );
+          break;
+        case TypeMovie.nowPlaying:
+          context.read<MovieGetNowPlayingProvider>().getNowPlayingWithPaging(
                 context,
                 pagingController: _pagingController,
                 page: pageKey,
@@ -52,11 +60,11 @@ class _MoviePaginationPageState extends State<MoviePaginationPage> {
         title: Builder(builder: (_) {
           switch (widget.type) {
             case TypeMovie.discover:
-              return Text('Discover Movies');
-              ;
+              return const Text('Discover Movies');
             case TypeMovie.topRated:
-              return Text('Top Rated Movies');
-              ;
+              return const Text('Top Rated Movies');
+            case TypeMovie.nowPlaying:
+              return const Text('Now Playing Movies');
           }
         }),
         backgroundColor: Colors.white,
@@ -64,7 +72,7 @@ class _MoviePaginationPageState extends State<MoviePaginationPage> {
         elevation: 0.5,
       ),
       body: PagedListView.separated(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<MovieModel>(
           itemBuilder: (context, item, index) => ItemMovieWidget(
@@ -75,7 +83,7 @@ class _MoviePaginationPageState extends State<MoviePaginationPage> {
             widthPoster: 80,
           ),
         ),
-        separatorBuilder: (context, index) => SizedBox(height: 10),
+        separatorBuilder: (context, index) => const SizedBox(height: 10),
       ),
     );
   }

@@ -1,15 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/movie/components/movie_discover_component.dart';
+import 'package:flutter_application_1/movie/components/movie_now_playing_component.dart';
 import 'package:flutter_application_1/movie/components/movie_top_rated_component.dart';
-import 'package:flutter_application_1/movie/models/movie_model.dart';
 import 'package:flutter_application_1/movie/pages/movie_pagination_page.dart';
-import 'package:flutter_application_1/movie/providers/movie_get_discover_provider.dart';
-import 'package:flutter_application_1/movie/providers/movie_get_top_rated_provider.dart';
-import 'package:flutter_application_1/widget/image_widget.dart';
-import 'package:flutter_application_1/widget/item_movie_widget.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_application_1/app_constant.dart';
 
 class MoviePage extends StatelessWidget {
   const MoviePage({super.key});
@@ -32,7 +25,7 @@ class MoviePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text('MOVIEW'),
+                const Text('MOVIEW'),
               ],
             ),
             centerTitle: true,
@@ -45,28 +38,42 @@ class MoviePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => MoviePaginationPage(
+                  builder: (_) => const MoviePaginationPage(
                     type: TypeMovie.discover,
                   ),
                 ),
               );
             },
           ),
-          MovieDiscoverComponent(),
+          const MovieDiscoverComponent(),
           _WidgetTitle(
             title: 'Top Rated Movies',
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => MoviePaginationPage(
+                  builder: (_) => const MoviePaginationPage(
                     type: TypeMovie.topRated,
                   ),
                 ),
               );
             },
           ),
-          MovieTopRatedComponent(),
+          const MovieTopRatedComponent(),
+          _WidgetTitle(
+            title: 'Now Playing Movies',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const MoviePaginationPage(
+                    type: TypeMovie.nowPlaying,
+                  ),
+                ),
+              );
+            },
+          ),
+          const MovieNowPlayingComponent(),
         ],
       ),
     );
@@ -77,7 +84,7 @@ class _WidgetTitle extends SliverToBoxAdapter {
   final String title;
   final void Function() onPressed;
 
-  _WidgetTitle({required this.title, required this.onPressed});
+  const _WidgetTitle({required this.title, required this.onPressed});
 
   @override
   Widget? get child => Padding(
@@ -87,7 +94,7 @@ class _WidgetTitle extends SliverToBoxAdapter {
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18.0,
               ),
@@ -96,12 +103,12 @@ class _WidgetTitle extends SliverToBoxAdapter {
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.black,
-                shape: StadiumBorder(),
-                side: BorderSide(
+                shape: const StadiumBorder(),
+                side: const BorderSide(
                   color: Colors.black54,
                 ),
               ),
-              child: Text('See All'),
+              child: const Text('See All'),
             )
           ],
         ),

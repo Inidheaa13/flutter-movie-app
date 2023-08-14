@@ -27,7 +27,7 @@ class _MovieDiscoverComponentState extends State<MovieDiscoverComponent> {
         builder: (_, provider, __) {
           if (provider.isLoading) {
             return Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
               height: 300,
               width: double.infinity,
               decoration: BoxDecoration(
@@ -61,14 +61,14 @@ class _MovieDiscoverComponentState extends State<MovieDiscoverComponent> {
             );
           }
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
             height: 300,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.black26,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Center(
+            child: const Center(
               child: Text(
                 'Not Found Discover Movie',
                 style: TextStyle(

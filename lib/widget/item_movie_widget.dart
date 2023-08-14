@@ -38,7 +38,7 @@ class ItemMovieWidget extends Container {
           Container(
             height: heightBackdrop,
             width: widthBackdrop,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -62,28 +62,28 @@ class ItemMovieWidget extends Container {
                   width: widthPoster,
                   radius: 10,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Text(
                   movie.title,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.star_rounded,
                       color: Colors.amber,
                     ),
                     Text(
                       '${movie.voteAverage} (${movie.voteCount})',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
