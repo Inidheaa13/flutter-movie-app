@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/movie/models/movie_detail_model.dart';
 import 'package:flutter_application_1/movie/models/movie_model.dart';
 import 'image_widget.dart';
 
 class ItemMovieWidget extends Container {
-  final MovieModel movie;
-
+  final MovieModel? movie;
+  final MovieDetailModel? movieDetail;
   final double heightBackdrop;
   final double widthBackdrop;
   final double widthPoster;
   final double heightPoster;
+  final double radius;
+  final void Function()? onTap;
 
   ItemMovieWidget({
-    required this.movie,
     required this.heightBackdrop,
     required this.widthBackdrop,
     required this.widthPoster,
     required this.heightPoster,
+    this.radius = 12,
+    this.movie,
+    this.movieDetail,
+    this.onTap,
     super.key,
   });
 
@@ -24,14 +30,15 @@ class ItemMovieWidget extends Container {
 
   @override
   Decoration? get decoration => BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(radius),
       );
 
   @override
   Widget? get child => Stack(
         children: [
           ImageNetworkWidget(
-            imageSrc: '${movie.backdropPath}',
+            imageSrc:
+                '${movieDetail != null ? movieDetail!.backdropPath : movie!.backdropPath}',
             height: heightBackdrop,
             width: widthBackdrop,
           ),
@@ -57,7 +64,8 @@ class ItemMovieWidget extends Container {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ImageNetworkWidget(
-                  imageSrc: '${movie.posterPath}',
+                  imageSrc:
+                      '${movieDetail != null ? movieDetail!.posterPath : movie!.posterPath}',
                   height: heightPoster,
                   width: widthPoster,
                   radius: 10,
@@ -66,7 +74,7 @@ class ItemMovieWidget extends Container {
                   height: 8,
                 ),
                 Text(
-                  movie.title,
+                  movieDetail != null ? movieDetail!.title : movie!.title,
                   style: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,
@@ -82,7 +90,7 @@ class ItemMovieWidget extends Container {
                       color: Colors.amber,
                     ),
                     Text(
-                      '${movie.voteAverage} (${movie.voteCount})',
+                      '${movieDetail != null ? movieDetail!.voteAverage : movie!.voteAverage} (${movieDetail != null ? movieDetail!.voteCount : movie!.voteCount})',
                       style: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.white,
@@ -93,6 +101,13 @@ class ItemMovieWidget extends Container {
               ],
             ),
           ),
+          Positioned.fill(
+              child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+            ),
+          ))
         ],
       );
 }

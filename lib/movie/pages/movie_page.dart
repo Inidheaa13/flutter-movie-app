@@ -28,6 +28,8 @@ class MoviePage extends StatelessWidget {
                 const Text('MOVIEW'),
               ],
             ),
+            floating: true,
+            snap: true,
             centerTitle: true,
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
